@@ -1,0 +1,19 @@
+{
+  "name": "EdnSyndicator",
+  "version": "0.0.1",
+  "description": "News syndicator",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R landing ednSyndicator.js"
+  },
+  "devDependencies": {
+    "should": ">= 0.0.0"
+  },
+  "repository": "",
+  "keywords": [
+    "rss",
+    "atom"
+  ],
+  "author": "Steve Hammond",
+  "license": "Apache 2.0"
+}
