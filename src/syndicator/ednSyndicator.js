@@ -3,13 +3,8 @@ define(['src/syndicator/syndUrls'], function(syndUrls){
         SubscribeTo: function (syndUrl){
             return syndUrls.push(syndUrl);
         },
-        List: function (syndUrl){
+        List: function (){
             return syndUrls;
         }
     };
-	
-    //module.exports = SubscribeTo
-    //module.exports = List
-	
-	//return ednSyndicator;
 });

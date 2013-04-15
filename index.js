@@ -1,10 +1,25 @@
-var syndicator = require('EdnSyndicator');
+var argv = require('optimist').argv;
+var requirejs = require('requirejs');
 
-syndicator.SubscribeTo("www.blah1.com/rss");
-syndicator.SubscribeTo("www.blah2.com/rss");
-syndicator.SubscribeTo("www.blah3.com/rss");
+requirejs.config({
+    baseUrl: __dirname,
+	nodeRequire: require
+});
 
-var subscriptions = syndicator.List();
-for(var i = 0; i > subscriptions; i++){
-	console.log(subscriptions[i]);
+var syndicator = requirejs('./src/syndicator/ednSyndicator')
+
+if (argv.subscribe){
+    syndicator.SubscribeTo(argv.subscribe)
+    console.log('subscribed to ' + argv.subscribe)
 }
+
+if(argv.list){
+    var items = syndicator.List();
+    console.log('syndicator has ' + items.length + ' items');
+
+    for(var i = 0; i < items.length; i++){
+	console.log(items[i]);
+    }
+}
+
+
