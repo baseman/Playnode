@@ -1,10 +1,10 @@
 define(['src/syndicator/syndUrls'], function(syndUrls){
     return {
         SubscribeTo: function (syndUrl){
-            return syndUrls.push(syndUrl);
+            return syndUrls.Add(syndUrl);
         },
         List: function (){
-            return syndUrls;
+            return syndUrls.Get();
         }
     };
 });
