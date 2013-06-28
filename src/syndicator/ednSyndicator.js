@@ -3,8 +3,8 @@ define(['src/syndicator/syndUrls'], function(syndUrls){
         SubscribeTo: function (syndUrl){
             return syndUrls.Add(syndUrl);
         },
-        List: function (){
-            return syndUrls.Get();
+        List: function (action){
+            return syndUrls.Get(action);
         }
     };
 });
