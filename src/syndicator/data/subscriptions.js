@@ -14,6 +14,14 @@ define([
 				});
 			});
 		},
+		Remove: function(syndUrl, onRemoved){
+			provider.Connect(function(client, close){
+				client.srem(blogKey, syndUrl, function(result){
+					close();
+					onRemoved(result);
+				});
+			});
+		},
 		Get: function(onGet){
 			provider.Connect(function(client, close){
 			

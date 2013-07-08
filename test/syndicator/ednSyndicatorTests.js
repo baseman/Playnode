@@ -30,7 +30,7 @@ function(require, redis, ednSyndicator, subscriptionModel){
 			    var syndUrl = "http://www.blog.com/rss";
 			    
 				it("should be able to add subscriptions", function(done){
-					ednSyndicator.SubscribeTo(syndUrl, function(err){
+					ednSyndicator.Subscribe(syndUrl, function(err){
 						isSuccess(done, err);
 					});
 				});
@@ -38,7 +38,7 @@ function(require, redis, ednSyndicator, subscriptionModel){
 				var expected = subscriptionModel.Make(syndUrl, new Date());
 			  
 				it("should be able to list subscriptions", function(done){
-					ednSyndicator.SubscribeTo(syndUrl, function(err){
+					ednSyndicator.Subscribe(syndUrl, function(err){
 						ednSyndicator.List(function(err, result){
 							isSuccess(done, err);
 							result[0].should.equal[expected.SyndUrl];
@@ -46,11 +46,13 @@ function(require, redis, ednSyndicator, subscriptionModel){
 					});
 				});
 				
-				var rss = "<rss></rss>";
-				
-				it("should be able to sync rss feed", function(done){
+				var rss = "<rss><item>1<item></rss>";
+				it("should be able to sync blog feed", function(done){
 					ednSyndicator.Sync(syndUrl, rss, function(err){
-						isSuccess(done, err);
+						var rss = "<rss><item>1<item><item>2<item></rss>";
+						ednSyndicator.Sync(syndUrl, rss, function(err){
+							isSuccess(done, err);
+						});
 					});
 				});
 				
@@ -64,7 +66,15 @@ function(require, redis, ednSyndicator, subscriptionModel){
 						});
 					});
 				});
-			  
+				
+				it("should be able to remove subscriptions", function(done){
+					ednSyndicator.Unsubscribe(syndUrl, function(err){
+						ednSyndicator.List(function(err, result){
+							result.length.should.equal[0];
+							isSuccess(done, err);
+						});
+					});
+				});
 			});
 		  });
 		}

@@ -8,22 +8,75 @@ requirejs.config({
 
 var syndicator = requirejs('./src/syndicator/ednSyndicator')
 
-syndicator.Init(function(){
-	if (argv.subscribe){
-		syndicator.SubscribeTo(argv.subscribe)
-		//console.log('subscribed to ' + argv.subscribe)
+var checkError = function(err, onError){
+	if (err) {
+		console.log("Error: " + err);
+		onError();
 	}
+};
 
-	if(argv.list){
-		var items = syndicator.List(function(err, obj){
-			console.log(obj);
+if (argv.subscribe){
+	if(!argv.uri)
+	{
+		console.log('Invalid arguments. Subscribe requires the following:');
+		console.log('--uri www.blah.com');
+		return;
+	}
+	
+	syndicator.Subscribe(argv.uri, function(err){
+		checkError(err, function(){
+			return;
 		});
-		//console.log('syndicator has ' + items.length + ' items');
+		console.log('subscribed to ' + argv.subscribe);
+	});
+}
 
-		//for(var i = 0; i < items.length; i++){
-		//    console.log(items[i]);
-		//}
+if (argv.list){
+	syndicator.List(function(err, items){
+		checkError(err, function(){
+			return;
+		});
+		
+		console.log('syndicator has ' + items.length + ' items');
+
+		for(var i = 0; i < items.length; i++){
+			console.log(items[i]);
+		}
+	});		
+}
+
+if (argv.Sync){
+	if(!argv.uri || !argv.rss)
+	{
+		console.log('Invalid arguments. Sync requires the following:');
+		console.log('--uri --rss');
+		return;
 	}
-});
 
+	ednSyndicator.Sync(syndUrl, rss, function(err){
+		checkError(err, function(){
+			return;
+		});
+		
+		checkError(err);
+	});
+}
 
+if (argv.Read){
+	if(!argv.uri)
+	{
+		console.log('Invalid arguments. Read requires the following:');
+		console.log('--uri');
+		return;
+	}
+	
+	ednSyndicator.Read(syndUrl, function(err, result){
+		checkError(err, function(){
+			return;
+		});
+		
+		console.log("URI:" + result.SyndUrl);
+		console.log("Date:" + result.Date);
+		console.log("Content:" + result.RSS);
+	});
+}
